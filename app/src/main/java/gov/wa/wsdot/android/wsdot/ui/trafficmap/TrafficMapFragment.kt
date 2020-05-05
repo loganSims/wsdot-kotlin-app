@@ -480,7 +480,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     when(newState) {
                         STATE_EXPANDED -> {
-                            BottomSheetBehavior.from(binding!!.includedHighwayAlertBottomSheet.highwayAlertBottomSheet).state = STATE_HIDDEN
+                            from(binding!!.includedHighwayAlertBottomSheet.highwayAlertBottomSheet).state = STATE_HIDDEN
                             t?.cancel()
                             t = Timer()
                             t?.scheduleAtFixedRate(
@@ -499,10 +499,14 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                             selectedCameraMarker?.remove()
                             t?.cancel()
                         }
-                        BottomSheetBehavior.STATE_DRAGGING -> {}
-                        BottomSheetBehavior.STATE_HALF_EXPANDED -> {}
-                        BottomSheetBehavior.STATE_HIDDEN -> {}
-                        BottomSheetBehavior.STATE_SETTLING -> {}
+                        STATE_DRAGGING -> {}
+                        STATE_HALF_EXPANDED -> {}
+                        STATE_SETTLING -> {}
+                        STATE_COLLAPSED -> {
+                            // override collapsed state with hidden
+                            // for some reason setting peek height to 0 still shows bottom sheet.
+                            from(binding!!.includedCameraBottomSheet.cameraBottomSheet).state = STATE_HIDDEN
+                        }
                     }
                 }
             }
@@ -565,8 +569,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                             BottomSheetBehavior.from(it.includedHighwayAlertBottomSheet.highwayAlertBottomSheet).state = STATE_HIDDEN
                             return
                         }
-                        else if (BottomSheetBehavior.from(it.includedCameraBottomSheet.cameraBottomSheet).state == STATE_EXPANDED) {
-                            BottomSheetBehavior.from(it.includedCameraBottomSheet.cameraBottomSheet).state = STATE_HIDDEN
+                        else if (BottomSheetBehavior.from(it.cameraBottomSheet).state == STATE_EXPANDED) {
+                            BottomSheetBehavior.from(it.cameraBottomSheet).state = STATE_HIDDEN
                             return
                         }
                     }

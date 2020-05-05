@@ -279,7 +279,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                 cameraViewModel.updateFavorite(camera .cameraId)
             }
 
-            BottomSheetBehavior.from(binding.includedCameraBottomSheet.cameraBottomSheet).state =
+            BottomSheetBehavior.from(binding.cameraBottomSheet).state =
                 BottomSheetBehavior.STATE_EXPANDED
 
             return true
@@ -298,7 +298,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
         binding.includedCameraBottomSheet.cameraViewModel = cameraViewModel
 
-        val behavior = BottomSheetBehavior.from(binding.includedCameraBottomSheet.cameraBottomSheet)
+        val behavior = BottomSheetBehavior.from(binding.cameraBottomSheet)
 
         val bottomSheetBehaviorCallback =
             object : BottomSheetBehavior.BottomSheetCallback() {
@@ -325,11 +325,11 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         // if a bottom sheet is open override back button to close sheet
         requireActivity()
             .onBackPressedDispatcher
-            .addCallback(this, object : OnBackPressedCallback(true) {
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     binding.let {
-                        if (BottomSheetBehavior.from(it.includedCameraBottomSheet.cameraBottomSheet).state == BottomSheetBehavior.STATE_EXPANDED) {
-                            BottomSheetBehavior.from(it.includedCameraBottomSheet.cameraBottomSheet).state =
+                        if (BottomSheetBehavior.from(it.cameraBottomSheet).state == BottomSheetBehavior.STATE_EXPANDED) {
+                            BottomSheetBehavior.from(it.cameraBottomSheet).state =
                                 BottomSheetBehavior.STATE_COLLAPSED
                             return
                         }
